@@ -165,6 +165,12 @@ header {
   text-align: center;
   font-size: 9vw;
 }
+.header-container-text {
+  text-shadow: -0.5px -0.5px 0 rgba(0, 0, 0, 0.5), 
+               0.5px -0.5px 0 rgba(0, 0, 0, 0.5), 
+               -0.5px 0.5px 0 rgba(0, 0, 0, 0.5), 
+               0.5px 0.5px 0 rgba(0, 0, 0, 0.5); /* Apply a subtler shadow effect */
+}
 
 /* --------------NAVBAR--------------- */
 .navbar {
