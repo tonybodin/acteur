@@ -108,47 +108,89 @@ function toggleNav() {
 }
 
 // ----------------- LIGHTBOX GALLERY -------------
-let lightbox = GLightbox();
-            lightbox.on('open', (target) => {
-                console.log('lightbox opened');
-            });
-            let lightboxDescription = GLightbox({
-                selector: '.glightbox2'
-            });
-            let lightboxVideo = GLightbox({
-                selector: '.glightbox3'
-            });
-            lightboxVideo.on('slide_changed', ({ prev, current }) => {
-                console.log('Prev slide', prev);
-                console.log('Current slide', current);
+document.addEventListener("DOMContentLoaded", () => {
+  const imageLinks = Array.from(document.querySelectorAll(".glightbox"));
+  const lightbox = document.createElement("div");
+  lightbox.classList.add("lightbox-overlay");
+  lightbox.innerHTML = `
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-arrow left">&#10094;</button>
+    <div class="lightbox-caption"></div>
+    <img src="" alt="lightbox image">
+    <button class="lightbox-arrow right">&#10095;</button>
+  `;
+  document.body.appendChild(lightbox);
 
-                const { slideIndex, slideNode, slideConfig, player } = current;
+  const lightboxImage = lightbox.querySelector("img");
+  const lightboxCaption = lightbox.querySelector(".lightbox-caption");
+  const closeBtn = lightbox.querySelector(".lightbox-close");
+  const prevBtn = lightbox.querySelector(".lightbox-arrow.left");
+  const nextBtn = lightbox.querySelector(".lightbox-arrow.right");
+  let currentIndex = 0;
 
-                if (player) {
-                    if (!player.ready) {
-                        // If player is not ready
-                        player.on('ready', (event) => {
-                            // Do something when video is ready
-                        });
-                    }
+  const openLightbox = (index) => {
+    currentIndex = index;
+    lightboxImage.src = imageLinks[currentIndex].href;
+    lightboxCaption.textContent = imageLinks[currentIndex].dataset.title || "";
+    lightbox.style.display = "flex";
+    document.body.style.overflow = "hidden"; // Disable scrolling
+  };
 
-                    player.on('play', (event) => {
-                        console.log('Started play');
-                    });
+  const closeLightbox = () => {
+    lightbox.style.display = "none";
+    document.body.style.overflow = ""; // Enable scrolling
+  };
 
-                    player.on('volumechange', (event) => {
-                        console.log('Volume change');
-                    });
+  const showPrev = () => {
+    currentIndex = (currentIndex - 1 + imageLinks.length) % imageLinks.length;
+    openLightbox(currentIndex);
+  };
 
-                    player.on('ended', (event) => {
-                        console.log('Video ended');
-                    });
-                }
-            });
+  const showNext = () => {
+    currentIndex = (currentIndex + 1) % imageLinks.length;
+    openLightbox(currentIndex);
+  };
 
-            let lightboxInlineIframe = GLightbox({
-                selector: '.glightbox4'
-            });
+  // Setup event listeners
+  imageLinks.forEach((link, index) => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      openLightbox(index);
+    });
+  });
+
+  closeBtn.addEventListener("click", closeLightbox);
+
+  lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  prevBtn.addEventListener("click", showPrev);
+  nextBtn.addEventListener("click", showNext);
+
+  // Keyboard support
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.style.display === "flex") {
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "Escape") lightbox.style.display = "none";
+    }
+  });
+
+  // Touch swipe support
+  let startX = 0;
+  lightbox.addEventListener("touchstart", (e) => {
+    startX = e.changedTouches[0].screenX;
+  });
+
+  lightbox.addEventListener("touchend", (e) => {
+    const endX = e.changedTouches[0].screenX;
+    const deltaX = endX - startX;
+    if (deltaX > 50) showPrev();
+    else if (deltaX < -50) showNext();
+  });
+});
+
 
 
 

@@ -11,8 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="glightbox.css">
-
+    
     <script defer type="text/javascript" src="main.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Google Font -->
@@ -126,42 +125,51 @@
   </section>
 
   <footer>
-    <div class="footer-container">
-      <div class="copyright footer">
+    <div class="footer-container-top">
+      <div class="footer-copyright">
         <p>Tous droits réservés &copy;<script>document.write(new Date().getFullYear())</script></p>
       </div>
-      <div class="socials footer">  
-        <a href="https://www.instagram.com/tony.bodin/" class="icon" target="_blank">
+      <div class="footer-socials"> 
+        <a href="https://www.instagram.com/tony.bodin/" class="footer-icon" target="_blank">
           <ion-icon name="logo-instagram"></ion-icon>
         </a>
-        <a href="https://vimeo.com/user51660678" class="icon" target="_blank">
+        <a href="https://vimeo.com/user51660678" class="footer-icon" target="_blank">
           <ion-icon name="logo-vimeo"></ion-icon>
         </a>
-        <a href="https://www.facebook.com/tony.bodin.1" class="icon" target="_blank">
+        <a href="https://www.facebook.com/tony.bodin.1" class="footer-icon" target="_blank">
           <ion-icon name="logo-facebook"></ion-icon>
         </a>        
+      </div>
+      <div class="footer-credits">
+        <div class="footer-credits" onclick="toggleNav()">Crédits</div>
+      </div>
+    </div>
+      <div class="footer-line"></div>
+    <div class="footer-container-bottom">
+      <div class="footer-logos">
+        <a href="https://www.instagram.com/lartriste.asso/" target="_blank">
+          <img src="imgs/lartriste.png" alt="L'artriste logo" class="footer-logos">
+        </a>
       </div>
       <div class="credit-container">
         <div id="mySidenav" class="sidenav">
           <a href="#" class="closebtn" onclick="closeNav()">&times;</a>
-            <h2 class="sidenavtitle syne">Crédits</h2>
-              <h2 class="syne">Typographies</h2>
-                <a href="https://fonts.google.com/specimen/Syne" target="_blank">Syne</a>
-                <a href="https://fonts.google.com/specimen/Montserrat" target="_blank">Montserrat</a>
-              <h2 class="syne">Photographes</h2>
-                <a href="https://www.instagram.com/alain_cianci/" target="_blank">Alain Cianci</a>
-                <a href="https://www.instagram.com/felixmct/" target="_blank">Felixmct</a>
-                <a href="https://www.instagram.com/lucie_cottin_book_photographe/" target="_blank">Lucie Cottin</a>
-              <h2 class="syne">Développeur Web</h2>
-                <a href="https://alxixla.github.io/alix/" target="_blank">Alix LY</a>
+          <h2 class="sidenavtitle syne">Crédits</h2>
+          <h2 class="syne">Typographies</h2>
+          <a href="https://fonts.google.com/specimen/Syne" target="_blank">Syne</a>
+          <a href="https://fonts.google.com/specimen/Montserrat" target="_blank">Montserrat</a>
+          <h2 class="syne">Photographes</h2>
+          <a href="https://www.instagram.com/alain_cianci/" target="_blank">Alain Cianci</a>
+          <a href="https://www.instagram.com/felixmct/" target="_blank">Felixmct</a>
+          <a href="https://www.instagram.com/lucie_cottin_book_photographe/" target="_blank">Lucie Cottin</a>
+          <h2 class="syne">Développeur Web</h2>
+          <a href="https://alxixla.github.io/alix/" target="_blank">Alix LY</a>
         </div>
-        <div class="footer-credits" onclick="toggleNav()">Crédits</div>
       </div>
     </div>
   </footer>
-  
+    
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script> <!--Ionicons icons-->
-  <script src="glightbox.min.js"></script>
 </body>
 </html>
 
