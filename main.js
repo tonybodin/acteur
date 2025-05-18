@@ -158,11 +158,22 @@ document.addEventListener("DOMContentLoaded", () => {
       openLightbox(index);
     });
   });
-
   closeBtn.addEventListener("click", closeLightbox);
 
   lightbox.addEventListener("click", e => {
     if (e.target === lightbox) closeLightbox();
+  });
+
+  // Swipe down to close on small devices
+  let startY = 0;
+  lightbox.addEventListener("touchstart", (e) => {
+    startY = e.changedTouches[0].screenY;
+  });
+
+  lightbox.addEventListener("touchend", (e) => {
+    const endY = e.changedTouches[0].screenY;
+    const deltaY = endY - startY;
+    if (deltaY > 50) closeLightbox(); // Close if swiped down
   });
 
   prevBtn.addEventListener("click", showPrev);
@@ -173,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lightbox.style.display === "flex") {
       if (e.key === "ArrowRight") showNext();
       if (e.key === "ArrowLeft") showPrev();
-      if (e.key === "Escape") lightbox.style.display = "none";
+      if (e.key === "Escape") closeLightbox();
     }
   });
 
@@ -189,9 +200,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (deltaX > 50) showPrev();
     else if (deltaX < -50) showNext();
   });
+
+  // Ensure compatibility without relying on external libraries
+  if (typeof GLightbox !== "undefined") {
+    const glightbox = GLightbox({
+      touchNavigation: true,
+      loop: true,
+      openEffect: 'fade',
+      closeEffect: 'fade',
+      slideEffect: 'slide', // Smooth swiping effect
+      slideDuration: 400,   // Transition duration in ms
+    });
+  }
 });
-
-
-
 
 

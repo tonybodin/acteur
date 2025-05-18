@@ -649,6 +649,7 @@ footer {
 .footer-logos img {
   height: 120px;
   transition: 1s;
+  object-fit: contain; /* Prevent stretching */
 }
 
 @media (max-width: 800px) {
