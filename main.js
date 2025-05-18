@@ -130,15 +130,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const openLightbox = (index) => {
     currentIndex = index;
-    lightboxImage.src = imageLinks[currentIndex].href;
+    const newSrc = imageLinks[currentIndex].href;
+
+    lightboxImage.classList.remove("loaded");
+    lightboxImage.src = newSrc;
     lightboxCaption.textContent = imageLinks[currentIndex].dataset.title || "";
     lightbox.style.display = "flex";
-    document.body.style.overflow = "hidden"; // Disable scrolling
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    lightboxImage.onload = () => {
+      lightboxImage.classList.add("loaded");
+    };
   };
 
   const closeLightbox = () => {
     lightbox.style.display = "none";
-    document.body.style.overflow = ""; // Enable scrolling
+    document.body.style.overflow = "";
+    document.body.style.touchAction = "";
   };
 
   const showPrev = () => {
@@ -151,33 +160,18 @@ document.addEventListener("DOMContentLoaded", () => {
     openLightbox(currentIndex);
   };
 
-  // Setup event listeners
   imageLinks.forEach((link, index) => {
     link.addEventListener("click", e => {
       e.preventDefault();
       openLightbox(index);
     });
   });
+
   closeBtn.addEventListener("click", closeLightbox);
 
   lightbox.addEventListener("click", e => {
     if (e.target === lightbox) closeLightbox();
   });
-
-  // Swipe down to close on small devices
-  let startY = 0;
-  lightbox.addEventListener("touchstart", (e) => {
-    startY = e.changedTouches[0].screenY;
-  });
-
-  lightbox.addEventListener("touchend", (e) => {
-    const endY = e.changedTouches[0].screenY;
-    const deltaY = endY - startY;
-    if (deltaY > 50) closeLightbox(); // Close if swiped down
-  });
-
-  prevBtn.addEventListener("click", showPrev);
-  nextBtn.addEventListener("click", showNext);
 
   // Keyboard support
   document.addEventListener("keydown", (e) => {
@@ -188,30 +182,47 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Touch swipe support
+  // Swipe to close vertically
+  let startY = 0;
+  lightbox.addEventListener("touchstart", (e) => {
+    startY = e.changedTouches[0].screenY;
+  });
+
+  lightbox.addEventListener("touchend", (e) => {
+    const endY = e.changedTouches[0].screenY;
+    if (endY - startY > 50) closeLightbox();
+  });
+
+  // Swipe navigation horizontally (with cooldown)
   let startX = 0;
+  let swipeCooldown = false;
+
   lightbox.addEventListener("touchstart", (e) => {
     startX = e.changedTouches[0].screenX;
   });
 
   lightbox.addEventListener("touchend", (e) => {
+    if (swipeCooldown) return;
+
     const endX = e.changedTouches[0].screenX;
     const deltaX = endX - startX;
-    if (deltaX > 50) showPrev();
-    else if (deltaX < -50) showNext();
+
+    if (deltaX > 50) {
+      showPrev();
+      swipeCooldown = true;
+    } else if (deltaX < -50) {
+      showNext();
+      swipeCooldown = true;
+    }
+
+    setTimeout(() => {
+      swipeCooldown = false;
+    }, 400); // match image transition speed
   });
 
-  // Ensure compatibility without relying on external libraries
-  if (typeof GLightbox !== "undefined") {
-    const glightbox = GLightbox({
-      touchNavigation: true,
-      loop: true,
-      openEffect: 'fade',
-      closeEffect: 'fade',
-      slideEffect: 'slide', // Smooth swiping effect
-      slideDuration: 400,   // Transition duration in ms
-    });
-  }
+  prevBtn.addEventListener("click", showPrev);
+  nextBtn.addEventListener("click", showNext);
 });
+
 
 

@@ -509,6 +509,21 @@ header {
   font-family: sans-serif;
 }
 
+
+.lightbox-overlay img {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.lightbox-overlay img.loaded {
+  opacity: 1;
+}
+
+
+
+
+
+
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
